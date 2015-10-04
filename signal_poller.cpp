@@ -19,7 +19,7 @@ along with this program. If not, see <http://www.gnu.org/licenses/>.
 
 */
 
-// $Revision: 2659 $ $Date:: 2015-10-01 #$ $Author: serge $
+// $Revision: 2668 $ $Date:: 2015-10-02 #$ $Author: serge $
 
 #include "signal_poller.h"              // self
 
@@ -67,6 +67,7 @@ private:
 };
 
 std::unique_ptr<SignalHandler>  SignalHandler::inst_( new SignalHandler() );
+bool SignalHandler::should_close_fds_   = true;
 std::atomic_bool SignalHandler::is_hup_( false );
 std::atomic_bool SignalHandler::is_int_( false );
 std::atomic_bool SignalHandler::is_usr1_( false );
@@ -166,7 +167,7 @@ bool SignalHandler::poll( std::atomic_bool & b )
 {
     bool res = false;
 
-    b.exchange( res );
+    res = b.exchange( res );
 
     return res;
 }

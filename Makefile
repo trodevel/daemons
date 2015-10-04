@@ -65,7 +65,9 @@ EXE=
 #vpath %.cpp .
 
 SRCC = \
-	daemon.cpp
+	daemon.cpp \
+	signal_poller.cpp
+	
 OBJS = $(patsubst %.cpp,$(OBJDIR)/%.o,$(SRCC))
 
 LIB_NAMES = utils

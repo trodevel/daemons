@@ -96,14 +96,12 @@ $(TARGET): $(BINDIR) $(BINDIR)/$(TARGET)
 	ln -sf $(BINDIR)/$(TARGET) $(TARGET)
 	@echo "$@ uptodate - ${MODE}"
 
-$(BINDIR)/$(TARGET): $(LIBS) $(OBJDIR)/$(TARGET).o $(OBJS) $(BINDIR)/$(STATICLIB)
+$(BINDIR)/$(TARGET): $(OBJDIR)/$(TARGET).o $(OBJS) $(BINDIR)/$(STATICLIB) $(LIB_NAMES)
 	$(CC) $(CFLAGS) -o $@ $(OBJDIR)/$(TARGET).o $(BINDIR)/$(LIBNAME).a $(LIBS) $(EXT_LIBS) $(LFLAGS_TEST)
 
-$(LIBS):
-	for s in $(LIB_NAMES); do \
-		cd ../$$s; make; cd ../$(PROJECT); \
-		ln -sf ../../$$s/$(BINDIR)/lib$$s.a $(BINDIR); \
-		done;
+$(LIB_NAMES):
+	make -C ../$@
+	ln -sf ../../$@/$(BINDIR)/lib$@.a $(BINDIR)
 
 $(BINDIR):
 	@ mkdir -p $(OBJDIR)
